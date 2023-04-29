@@ -5,6 +5,7 @@ export default class Recipe {
     public title: string,
     public ingredients: { name: string; quantity: string }[],
     public directions: string,
+    public image: string,
     public author: ObjectId,
     public isPublic: boolean,
     public generatedByNLP: boolean,
