@@ -15,14 +15,18 @@ import {
         createUser,
         updateUser
      } from './database.service.ts';
-import redis from 'redis'
 import ExpressRedisCache from 'express-redis-cache'
 
 config();
 
 // init redis client
-const redisClient = redis.createClient({ url: 'redis://10.16.10.122:6379' })
-const cache = ExpressRedisCache({ client: redisClient })
+
+// connect to redis on 10.16.10.122:6379
+const cache = ExpressRedisCache({
+    host: process.env.REDIS_HOST,
+    port: 6379,
+    expire: 120,
+})
 
 // clear redis cache
 function clearRedisCache(route: string) {

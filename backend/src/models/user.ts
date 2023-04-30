@@ -5,6 +5,7 @@ export default class User {
     public id: ObjectId,
     public username: string,
     public email: string,
+    public picture: string,
     public savedRecipes: ObjectId[],
     public createdAt: Date,
     public updatedAt: Date,
