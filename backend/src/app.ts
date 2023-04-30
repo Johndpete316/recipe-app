@@ -6,7 +6,15 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { auth, requiredScopes } from 'express-oauth2-jwt-bearer';
 import Recipe from './models/recipe';
-import { connectToDatabase, createRecipe, getRecipeById, getRecipes } from './database.service.ts';
+import { 
+        connectToDatabase, 
+        createRecipe, 
+        getRecipeById, 
+        getRecipes, 
+        updateRecipe,
+        createUser,
+        updateUser
+     } from './database.service.ts';
 
 config();
 
@@ -50,7 +58,7 @@ app.get('/recipes/:id', asyncHandler(async (req: Request, res: Response) => {
     }
 }));
 
-// endpoint to get a user's saved recipes
+// TODO: endpoint to get a user's saved recipes from users col
 
 // Endpoint to create a new recipe
 app.post('/recipes', checkScopes, asyncHandler(async (req: Request, res: Response) => {
@@ -67,10 +75,39 @@ app.post('/recipes', checkScopes, asyncHandler(async (req: Request, res: Respons
 }));
 
 // Endpoint to update a recipe
+app.post('/recipes/:id', checkScopes, asyncHandler(async (req: Request, res: Response) => {
+    const recipeId = req.params.id;
+    const recipeData: Recipe = req.body;
+
+    // update the recipe in the database
+    const result = await updateRecipe(recipeId, recipeData);
+    
+
+    if (result === null) {
+        res.status(500).json({ error: 'Error updating recipe' });
+    } else {
+        res.status(201).json(result);
+    }
+}));
 
 // endpoint to create a new user
+app.post('/users', checkScopes, asyncHandler(async (req: Request, res: Response) => {
+    const userData = req.body;
+
+    // Create the user in the database
+    const result = await createUser(userData);
+
+    if (result === null) {
+        res.status(500).json({ error: 'Error creating user' });
+    } else {
+        res.status(201).json(result);
+    }
+}));
 
 // endpoint to update a user
+app.post('/users/:id', checkScopes, asyncHandler(async (req: Request, res: Response) => {
+        
+}));
 
 // endpoint to upload an image to s3 bucket
 

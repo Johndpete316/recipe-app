@@ -37,6 +37,12 @@ export async function connectToDatabase() {
 }
 
 // recipe CRUD operations
+// TODO: get all recipes saved by user
+// TODO: get all recipes created by user
+// TODO: get all recipes needs to be paginated
+// TODO: get all recipes needs to be searchable
+// TODO: get all recipes needs to include no private recipes
+
 export async function createRecipe(recipe: Recipe): Promise<boolean | null> {
     if (!collections!.recipes) return null;
     
