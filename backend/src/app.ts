@@ -15,8 +15,23 @@ import {
         createUser,
         updateUser
      } from './database.service.ts';
+import redis from 'redis'
+import ExpressRedisCache from 'express-redis-cache'
 
 config();
+
+// init redis client
+const redisClient = redis.createClient({ url: 'redis://10.16.10.122:6379' })
+const cache = ExpressRedisCache({ client: redisClient })
+
+// clear redis cache
+function clearRedisCache(route: string) {
+    cache.del('/recipes', (err) => {
+        if (err) {
+            console.error(`Error deleting cache on route ${route}: ${err}`)
+        }
+    });
+}
 
 
 // TODO: ASAP: FIX TOKEN EXPIRY AND IMPLMENT REFRESH TOKENS
@@ -32,7 +47,7 @@ const checkScopes = requiredScopes('write:data');
 connectToDatabase();
 
 // Endpoint to get all recipes
-app.get('/recipes', asyncHandler(async (req: Request, res: Response) => {
+app.get('/recipes', cache.route(), asyncHandler(async (req: Request, res: Response) => {
 
     // Get the recipe from the database
     const recipe = await getRecipes()
@@ -45,7 +60,7 @@ app.get('/recipes', asyncHandler(async (req: Request, res: Response) => {
 }));
 
 // Endpoint to get a recipe by ID
-app.get('/recipes/:id', asyncHandler(async (req: Request, res: Response) => {
+app.get('/recipes/:id', cache.route(), asyncHandler(async (req: Request, res: Response) => {
     const recipeId = req.params.id;
 
     // Get the recipe from the database
@@ -70,6 +85,11 @@ app.post('/recipes', checkScopes, asyncHandler(async (req: Request, res: Respons
     if (result === null) {
         res.status(500).json({ error: 'Error creating recipe' });
     } else {
+
+        // clear the cache
+        clearRedisCache('/recipes')
+
+        // return the result
         res.status(201).json(result);
     }
 }));
@@ -86,6 +106,10 @@ app.post('/recipes/:id', checkScopes, asyncHandler(async (req: Request, res: Res
     if (result === null) {
         res.status(500).json({ error: 'Error updating recipe' });
     } else {
+
+        clearRedisCache('/recipes')
+        clearRedisCache(`/recipes/${recipeId}`)
+
         res.status(201).json(result);
     }
 }));
@@ -118,6 +142,7 @@ const PORT = process.env.port || 3000;
 app.listen(PORT, () => [
     console.log(`Server is listening on port ${PORT}`)
 ])
+
 
 
 

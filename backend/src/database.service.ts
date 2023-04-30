@@ -45,6 +45,14 @@ export async function connectToDatabase() {
 
 export async function createRecipe(recipe: Recipe): Promise<boolean | null> {
     if (!collections!.recipes) return null;
+
+    // convert the author to an ObjectId
+    recipe.author = new mongoDB.ObjectId(recipe.author);
+
+    // convert createdAt and updatedAt to mongo timestamps
+    recipe.createdAt = new Date(recipe.createdAt);
+    recipe.updatedAt = new Date(recipe.updatedAt);
+
     
     try {
         const result = await collections.recipes.insertOne(recipe);
