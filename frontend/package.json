@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.0.2",
+    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.1",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4"
   },
