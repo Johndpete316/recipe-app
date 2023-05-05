@@ -34,6 +34,7 @@ export async function connectToDatabase() {
     );
 
     collections.recipes = recipesCollection;
+    collections.users = usersCollection;
 }
 
 // recipe CRUD operations
@@ -81,7 +82,10 @@ export async function getRecipes(): Promise<Recipe[] | null> {
     if (!collections!.recipes) return null;
 
     try {
-        const cursor = await collections.recipes.find();
+        const cursor = await collections.recipes
+                    .find()
+                    .limit(10)
+                    .sort({ createdAt: -1 });
         const results = await cursor.toArray();
         return results as Recipe[];
     } catch (error) {
@@ -144,6 +148,7 @@ export async function getUserById(id: string): Promise<User | null> {
         const result = await collections.users.findOne({
             _id: new mongoDB.ObjectId(id),
         });
+        
         return result as unknown as User;
     } catch (error) {
         console.error(error);

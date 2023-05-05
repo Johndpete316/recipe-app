@@ -1,0 +1,87 @@
+/* General layout and style */
+.card-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.card-div {
+    width: 100%;
+    max-width: 800px;
+}
+
+.ui.fluid.card {
+    border-radius: 10px;
+    border: hidden;
+}
+
+/* Recipe card style */
+.ui.card {
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+
+.ui.segment {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    font-variant-caps: all-small-caps;
+}
+
+/* Recipe image style */
+.image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* User info style */
+.user-field {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.user-field span {
+    margin-right: 0.5rem;
+}
+
+.meta {
+    margin-bottom: .5rem;
+}
+
+/* Ingredients and directions style */
+.list-item {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.separator-line {
+    stroke: #ffffff;
+    /* Color of the line */
+    margin: 1rem 0;
+    /* Vertical space above and below the line */
+}
+
+/* Meta style */
+.ui.card .meta {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 1rem;
+}

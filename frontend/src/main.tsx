@@ -6,11 +6,15 @@ import 'semantic-ui-css/semantic.min.css';
 import { Auth0Provider } from '@auth0/auth0-react'
 import { domain, clientId } from '../config.json'
 
+// address possible XSS issues with using localstorage
+// https://auth0.com/docs/libraries/auth0-single-page-app-sdk#change-storage-options
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Auth0Provider 
       domain={domain}
       clientId={clientId}
+      cacheLocation='localstorage'
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}

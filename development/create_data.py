@@ -26,7 +26,7 @@ def get_recipe(ingredients: List[str]) -> dict:
     return response.json()
 
 def add_recipe_to_database(recipes: List[dict]) -> List[dict]:
-    url = "http://localhost:3000/recipes"
+    url = "http://localhost:3000/create/recipe"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {TOKEN}"
@@ -61,6 +61,6 @@ def main():
 if __name__ == "__main__":
 
     # Run the main function 10 times
-    for i in range(10):
+    for i in range(500):
         main()
                 
