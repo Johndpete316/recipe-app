@@ -84,7 +84,6 @@ export async function getRecipes(): Promise<Recipe[] | null> {
     try {
         const cursor = await collections.recipes
                     .find()
-                    .limit(10)
                     .sort({ createdAt: -1 });
         const results = await cursor.toArray();
         return results as Recipe[];

@@ -1,16 +1,17 @@
-import { useAuth0 } from "@auth0/auth0-react";
-import { Button } from 'semantic-ui-react'
+import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 
 const LogoutButton: React.FC = () => {
-    const { logout } = useAuth0();
+  const { logout } = useAuth0();
 
-    return (
-        <Button onClick={() => logout({ logoutParams: {returnTo: window.location.origin} })}>
-            Log Out
-        </Button>
-
-    )
-}
+  return (
+    <button
+      onClick={() => logout({ returnTo: window.location.origin })}
+      className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+    >
+      Log Out
+    </button>
+  );
+};
 
 export default LogoutButton;

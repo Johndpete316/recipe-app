@@ -26,7 +26,7 @@ def get_recipe(ingredients: List[str]) -> dict:
     return response.json()
 
 def add_recipe_to_database(recipes: List[dict]) -> List[dict]:
-    url = "http://localhost:3000/create/recipe"
+    url = "http://localhost:3000/api/create/recipe"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {TOKEN}"
@@ -43,7 +43,20 @@ def add_recipe_to_database(recipes: List[dict]) -> List[dict]:
 
         data = json.dumps(recipe)
         response = requests.post(url, headers=headers, data=data)
-        responses.append(response.json())
+
+        # Check if the response has any content before attempting to parse as JSON
+        if response.content:
+            try:
+                responses.append(response.json())
+            except json.decoder.JSONDecodeError:
+                print(f"Failed to add recipe: {recipe['title']}")
+                print(f"Response status code: {response.status_code}")
+                print(f"Response content: {response.content}")
+                responses.append({"error": "Error creating recipe"})
+        else:
+            print(f"Failed to add recipe: {recipe['title']}")
+            print(f"Response status code: {response.status_code}")
+            responses.append({"error": "Error creating recipe"})
 
     return responses
 

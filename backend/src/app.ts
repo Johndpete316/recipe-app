@@ -75,13 +75,25 @@ connectToDatabase();
 // route cached
 app.get('/api/recipes', cache.route(), asyncHandler(async (req: Request, res: Response) => {
 
+    interface RecipeResponse {
+        recipes: Recipe[],
+        message: string,
+        count: number
+    }
+
     // Get the recipe from the database
     const recipe = await getRecipes()
 
     if (recipe === null) {
         res.status(404).json({ error: 'Recipe not found' });
     } else {
-        res.status(200).json(recipe);
+
+        var response: RecipeResponse = {
+            recipes: recipe,
+            message: 'success',
+            count: recipe.length
+        }
+        res.status(200).json(response);
     }
 }));
 
